@@ -11,10 +11,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* TODO 
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-mid-rgb: 0, 0, 0, 0.4;
-    --background-end-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0; */
   }
 }
 
