@@ -2,28 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 0, 0, 0, 0.45;
-  --background-mid-rgb: 0, 0, 0, 0.05;
-  --background-end-rgb: 0, 0, 0, 0.2;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* TODO 
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-mid-rgb: 0, 0, 0, 0.4;
-    --background-end-rgb: 0, 0, 0; */
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
+  margin: 0;
 }
-
-.bodybg:after {
+main {
+  position: relative;
+}
+.extraShadow {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.extraShadow:after {
   content: "";
   position: fixed;
   top: 0;
@@ -36,4 +28,110 @@ body {
     rgba(var(--background-mid-rgb)) 50%,
     rgba(var(--background-end-rgb)) 85%
   );
+}
+
+h1 {
+  position: relative;
+}
+
+h1:after {
+  content: "";
+  border-right: 3px solid white;
+  animation: blink 0.5s step-end infinite alternate;
+  position: absolute;
+  height: 100%;
+  max-height: 66px;
+}
+
+.uxEngineer {
+  position: relative;
+  background-image: linear-gradient(
+    to right,
+    #cb9b51 0,
+    #cb9b51 22%,
+    #f6e27a 45%,
+    #f6e79f 50%,
+    #f6e27a 65%,
+    #cb9b51 100%
+  );
+  color: transparent;
+  -webkit-background-clip: text;
+}
+.uxEngineer.digital {
+  letter-spacing: 12px;
+}
+
+.bulletPoints div {
+  filter: grayscale(60%);
+  cursor: default;
+  padding: 2px 0;
+}
+.bulletPoints div:hover {
+  filter: none;
+}
+
+footer {
+  position: relative;
+  padding: 100px 0 0 0;
+}
+footer div {
+  display: block;
+  padding: 10px 0;
+}
+footer a {
+  margin-right: 10px;
+  display: inline-block;
+  padding: 0;
+  transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+footer a:hover {
+  transform: translate(2px);
+}
+.shwoop-in {
+  transform-origin: top left;
+  animation: shwoop 1s 1s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-duration: calc(1.7s + (var(--i) * 0.15s));
+  animation-delay: calc((var(--i) * 400ms));
+}
+
+.shwoop-bottom {
+  transform-origin: top left;
+  animation: shwoopLeft 1s 1s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+  animation-duration: calc(1.7s + (var(--j) * 0.05s));
+  animation-delay: calc((var(--j) * 200ms));
+}
+
+@media (min-width: 600px) {
+  h1 {
+    font-size: 44px;
+  }
+  footer {
+    position: absolute;
+    bottom: 10px;
+    right: 70px;
+    left: auto;
+  }
+  footer div {
+    display: inline-block;
+    padding: 30px 0;
+  }
+}
+
+@keyframes shwoop {
+  from {
+    opacity: 0;
+    transform: translateY(2px) skewY(1deg);
+  }
+}
+@keyframes shwoopLeft {
+  from {
+    opacity: 0;
+    transform: translateY(2px) translateX(10px) skewY(1deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
