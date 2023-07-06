@@ -10,6 +10,21 @@ export const metadata = {
   icons: {
     icon: "/icon.png",
   },
+  openGraph: {
+    title: "David Corbacho Román",
+    description: "UX Engineer living in the Nordics",
+    url: "https://dcorb.dev",
+    siteName: "David Corbacho Román",
+    images: [
+      {
+        url: "https://dcorb.dev/twittercard.png",
+        width: 1340,
+        height: 670,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
