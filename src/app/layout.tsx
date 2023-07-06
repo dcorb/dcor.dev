@@ -17,7 +17,7 @@ export const metadata = {
     siteName: "David Corbacho Román",
     images: [
       {
-        url: "https://dcorb.dev/twittercard.png",
+        url: "https://dcor.dev/twittercard.png",
         width: 1340,
         height: 670,
       },
