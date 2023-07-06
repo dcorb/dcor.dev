@@ -49,9 +49,9 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              nordlys.studio co-founder
+              nordlys.studio
             </a>{" "}
-            • remote
+            • co-founder • remote
           </div>
         </div>
 

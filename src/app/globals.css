@@ -39,6 +39,7 @@ main {
 
 h1 {
   position: relative;
+  padding-bottom: 6px;
 }
 
 h1:after {
@@ -47,7 +48,7 @@ h1:after {
   animation: blink 0.5s step-end infinite alternate;
   position: absolute;
   height: 100%;
-  max-height: 66px;
+  max-height: 55px;
 }
 
 .uxEngineer {
@@ -73,6 +74,9 @@ h1:after {
   cursor: default;
   padding: 2px 0;
 }
+.bulletPoints a {
+  border-bottom: 2px solid white;
+}
 .bulletPoints div:hover {
   filter: none;
 }
@@ -89,7 +93,7 @@ footer a {
   margin-right: 10px;
   display: inline-block;
   padding: 0;
-  transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 footer a:hover {
   transform: translate(2px);
@@ -108,7 +112,7 @@ footer a:hover {
   animation-delay: calc((var(--j) * 200ms));
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   h1 {
     font-size: 44px;
   }
@@ -121,6 +125,9 @@ footer a:hover {
   footer div {
     display: inline-block;
     padding: 30px 0;
+  }
+  h1:after {
+    max-height: 66px;
   }
 }
 
