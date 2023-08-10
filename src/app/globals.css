@@ -66,19 +66,15 @@ h1:after {
   -webkit-background-clip: text;
 }
 .uxEngineer.digital {
-  letter-spacing: 12px;
+  letter-spacing: 12.4px;
 }
 
 .bulletPoints div {
-  filter: grayscale(60%);
   cursor: default;
   padding: 2px 0;
 }
 .bulletPoints a {
   border-bottom: 2px solid white;
-}
-.bulletPoints div:hover {
-  filter: none;
 }
 
 footer {
