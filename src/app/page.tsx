@@ -99,7 +99,8 @@ export default function Home() {
             >
               Github
             </a>
-          </div>
+          </div>{" "}
+          <div className="shwoop-bottom">| DOG</div>
         </footer>
       </div>
     </main>
