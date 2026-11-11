@@ -10,6 +10,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COLS = LITE ? 240 : 560;  /* one fixed world grid across the widest row (see the vertex shader) */
 const OCT = LITE ? 3 : 4;  /* fewer octaves: cleaner ridges, less fine-detail shimmer */
 const PARTICLES = LITE ? 80 : 220;
+const BOOST = LITE ? 1.35 : 1;  /* phone screens read darker (small, often dimmed, viewed outdoors): lift the lines a bit more */
 const Z_MAX = 55, EYE_Z = -2, FOV = 40 * Math.PI / 180;
 const IDX32 = !!gl.getExtension('OES_element_index_uint');
 const MAX_ROWS = IDX32 ? 260 : Math.floor(65535 / COLS / 2);  /* line ribbons use 2 vertices per column */
@@ -18,10 +19,10 @@ const IdxArr = IDX32 ? Uint32Array : Uint16Array, IDX_TYPE = IDX32 ? gl.UNSIGNED
 const DEFAULTS = {
   playing: !REDUCED, ripple: false, speed: 0.08, motion: 'crosswind', gust: 0, glide: 0.25,
   height: 0.86, density: 226, tilt: 7.3,
-  intensity: 1.4, accent: 0.38,
+  intensity: 1.65, accent: 0.38,
   grain: false, scan: false, glitch: false, fog: true, hand: false
 };
-const KEY = 'dcor-terrain-v10';
+const KEY = 'dcor-terrain-v11';
 let S = { ...DEFAULTS };
 try { const saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && !REDUCED) S = { ...DEFAULTS, ...saved }; } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
@@ -210,12 +211,12 @@ void main(){ gl_Position = vec4(a_xy, 0.0, 1.0); }`;
 const POST_FS = `
 precision highp float;
 uniform vec2 u_res;
-uniform float u_clock, u_grain, u_scan, u_fog, u_glitch, u_gseed, u_dpr;
+uniform float u_clock, u_grain, u_scan, u_fog, u_glitch, u_gseed, u_dpr, u_vig;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
 void main(){
   vec2 uv = gl_FragCoord.xy / u_res;
   float d = length((uv - 0.5) * vec2(1.1, 1.0)) * 1.25;
-  float vig = smoothstep(0.45, 1.05, d) * 0.7;
+  float vig = smoothstep(0.45, 1.05, d) * u_vig;
   float sl = u_scan * (0.5 + 0.5 * sin(gl_FragCoord.y / u_dpr * 3.14159 * 0.5)) * 0.16;
   float g = hash(floor(gl_FragCoord.xy / max(u_dpr * 0.75, 1.0)) + fract(u_clock * 7.0) * vec2(91.0, 37.0)) - 0.5;
   float haze = u_fog * smoothstep(0.4, 1.0, uv.y) * 0.07 * (0.75 + 0.25 * sin(uv.x * 3.0 + u_clock * 0.08));
@@ -405,7 +406,7 @@ function render() {
   gl.uniform1f(u.u_glitch, glitchAmt); gl.uniform1f(u.u_gseed, gseed);
   gl.uniform1f(u.u_ripOn, S.ripple ? 1 : 0); gl.uniform4fv(u.u_rip, rips); gl.uniform1f(u.u_calm, calmLin * calmLin * (3 - 2 * calmLin));
   gl.uniform1f(u.u_accent, S.accent); gl.uniform1f(u.u_fog, S.fog ? 1 : 0);
-  gl.uniform1f(u.u_int, S.intensity);
+  gl.uniform1f(u.u_int, S.intensity * BOOST);
   gl.uniform3fv(u.u_bg, BG); gl.uniform3fv(u.u_line, LINE); gl.uniform3fv(u.u_hi, HI);
   gl.uniform3fv(u.u_accC, ACC); gl.uniform3fv(u.u_haze, HAZE);
 
@@ -442,7 +443,7 @@ function render() {
   gl.uniform2f(P.u.u_res, canvas.width, canvas.height);
   gl.uniform1f(P.u.u_clock, clock); gl.uniform1f(P.u.u_grain, S.grain ? 1 : 0);
   gl.uniform1f(P.u.u_scan, S.scan ? 1 : 0); gl.uniform1f(P.u.u_fog, S.fog ? 1 : 0);
-  gl.uniform1f(P.u.u_glitch, glitchAmt); gl.uniform1f(P.u.u_gseed, gseed); gl.uniform1f(P.u.u_dpr, dpr);
+  gl.uniform1f(P.u.u_glitch, glitchAmt); gl.uniform1f(P.u.u_gseed, gseed); gl.uniform1f(P.u.u_dpr, dpr); gl.uniform1f(P.u.u_vig, LITE ? 0.4 : 0.6);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
   gl.disableVertexAttribArray(pl);
